@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>ExpensePro</h2>
+<a href="/">Dashboard</a>
+<a href="/add">Add Expense</a>
+<a href="/export">Export</a>
+<a href="/logout">Logout</a>
+</div>
+
+<div class="main">
+
+<h1>Dashboard</h1>
+
+<div class="cards">
+<div class="card">Total ₹ {{ total }}</div>
+<div class="card">Transactions {{ count }}</div>
+</div>
+
+<div style="width:400px;margin-top:20px;">
+<canvas id="chart"></canvas>
+</div>
+
+<table>
+<tr>
+<th>Title</th>
+<th>Amount</th>
+<th>Category</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+
+{% for e in expenses %}
+<tr>
+<td>{{ e.title }}</td>
+<td>{{ e.amount }}</td>
+<td>{{ e.category }}</td>
+<td>{{ e.date }}</td>
+<td>
+<a href="/edit/{{e.id}}">Edit</a>
+<a href="/delete/{{e.id}}" onclick="return confirm('Delete?')">Delete</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+
+<script id="chart-data" type="application/json">
+{{ categories | tojson }}
+</script>
+
+<script>
+const data = JSON.parse(document.getElementById('chart-data').textContent);
+
+new Chart(document.getElementById('chart'), {
+    type: 'pie',
+    data: {
+        labels: Object.keys(data),
+        datasets: [{
+            data: Object.values(data),
+            backgroundColor: [
+                '#22c55e',
+                '#3b82f6',
+                '#f59e0b',
+                '#ef4444',
+                '#8b5cf6',
+                '#14b8a6'
+            ]
+        }]
+    }
+});
+</script>
+
+</body>
+</html>

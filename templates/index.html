@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Tracker</h1>
+        <a class="btn" href="/add">Add Expense</a>
+        <h3>Total Spent: ₹ {{ total if total else 0 }}</h3>
+
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            {% for e in expenses %}
+            <tr>
+                <td>{{ e.title }}</td>
+                <td>₹ {{ e.amount }}</td>
+                <td>{{ e.category }}</td>
+                <td>{{ e.date }}</td>
+                <td>
+                    <a class="edit" href="/edit/{{ e.id }}">Edit</a>
+                    <a class="delete" href="/delete/{{ e.id }}" onclick="return confirmDelete()">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="form">
+<h2>Edit</h2>
+
+<form method="POST">
+<input name="title" value="{{ expense.title }}">
+<input name="amount" value="{{ expense.amount }}">
+<input name="category" value="{{ expense.category }}">
+<input type="date" name="date" value="{{ expense.date }}">
+<button>Update</button>
+</form>
+
+</div>
+
+</body>
+</html>
