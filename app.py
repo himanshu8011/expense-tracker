@@ -4,7 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 
 app = Flask(__name__)
-app.secret_key = "secret"
+import os
+app.secret_key = os.environ.get("SECRET_KEY", "secret")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -111,15 +112,11 @@ def edit(id):
 
 @app.route("/export")
 def export():
-    expenses = Expense.query.filter_by(user_id=session['user_id']).all()
+    # your export code
+    pass
 
-    df = pd.DataFrame([[e.title,e.amount,e.category,e.date] for e in expenses],
-                      columns=["Title","Amount","Category","Date"])
-    df.to_csv("expenses.csv", index=False)
-
-    return send_file("expenses.csv", as_attachment=True)
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
